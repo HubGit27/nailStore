@@ -1,17 +1,85 @@
 // app/services/page.tsx
 import { ServiceCard } from '@/components/ui/ServiceCard';
-import type { Service } from '@/components/shared/types'; // Import from our new shared types file
+import type { Service } from '@/components/shared/types';
+
+// Define the fallback data in case the API call fails
+const fallbackServices: Service[] = [
+  {
+    id: 'fallback-1',
+    name: 'Basic Manicure',
+    description: 'Includes nail shaping, cuticle care, hand massage, and regular polish.',
+    duration: 30,
+    price: 25,
+    category: 'Manicure'
+  },
+  {
+    id: 'fallback-2',
+    name: 'Gel Manicure',
+    description: 'A long-lasting manicure with gel polish that cures under a UV light.',
+    duration: 45,
+    price: 35,
+    category: 'Manicure'
+  },
+  {
+    id: 'fallback-3',
+    name: 'Deluxe Pedicure',
+    description: 'Includes an exfoliating scrub, a hydrating mask, and an extended massage.',
+    duration: 60,
+    price: 50,
+    category: 'Pedicure'
+  },
+  {
+    id: 'fallback-4',
+    name: 'Acrylic Full Set',
+    description: 'Application of a full set of durable and beautiful acrylic nails.',
+    duration: 75,
+    price: 60,
+    category: 'Extensions'
+  },
+  {
+    id: 'fallback-5',
+    name: 'Nail Art',
+    description: 'Add a custom design to any manicure or pedicure service. Price is per nail.',
+    duration: 15,
+    price: 10,
+    category: 'Add-ons'
+  },
+  {
+    id: 'fallback-6',
+    name: 'Mani-Pedi Combo',
+    description: 'Basic manicure and pedicure package for a complete treatment.',
+    duration: 75,
+    price: 55,
+    category: 'Packages'
+  },
+];
 
 async function getServices(): Promise<Service[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`, {
-      next: { revalidate: 3600 }
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/server-api/services`, {
+      next: { revalidate: 3600 } // Re-fetch every hour
     });
-    if (!res.ok) return [];
-    return res.json();
+
+    if (!res.ok) {
+      console.error('❌ API response not ok, returning fallback data.');
+      return fallbackServices;
+    }
+    
+    const responseJson = await res.json();
+    
+    // Check if the response has a 'data' property and it's an array
+    if (responseJson && Array.isArray(responseJson.data)) {
+        console.log('✅ Successfully fetched and parsed services.');
+        return responseJson.data;
+    }
+    
+    // Fallback for unexpected JSON structure
+    console.warn('⚠️ Unexpected API response structure, returning fallback data.');
+    return fallbackServices;
+
   } catch (error) {
-    console.error("Failed to fetch services:", error);
-    return [];
+    console.error("❌ Failed to fetch services, returning fallback data:", error);
+    return fallbackServices;
   }
 }
 

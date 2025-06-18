@@ -14,7 +14,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden group">
       <div className="relative h-56">
-        <Image src={imageUrl} alt={service.name} layout="fill" objectFit="cover" className="transition-transform duration-500 group-hover:scale-110" />
+        {/* <Image src={imageUrl} alt={service.name} layout="fill" objectFit="cover" className="transition-transform duration-500 group-hover:scale-110" /> */}
       </div>
       <div className="p-6">
         <h3 className="text-xl font-bold text-charcoal">{service.name}</h3>

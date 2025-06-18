@@ -40,14 +40,16 @@ export default function BookingPage() {
             setIsLoading(true);
             try {
                 const [servicesRes, employeesRes] = await Promise.all([
-                    fetch('/api/services'),
-                    fetch('/api/employees')
+                    fetch(process.env.NEXT_PUBLIC_API_URL + '/server-api/services'),
+                    fetch(process.env.NEXT_PUBLIC_API_URL + '/server-api/employees')
                 ]);
+                console.log(servicesRes)
                 if (!servicesRes.ok || !employeesRes.ok) throw new Error("Failed to load booking information.");
                 
                 const servicesData = await servicesRes.json();
                 const employeesData = await employeesRes.json();
-                setServices(servicesData);
+                console.log(employeesData)
+                setServices(servicesData.data);
                 setEmployees(employeesData);
             } catch (err) {
                 setError('Could not load booking information. Please try again later.');
@@ -74,7 +76,7 @@ export default function BookingPage() {
                     date: selectedDate.toISOString().split('T')[0], // yyyy-MM-dd
                     duration: String(totalDuration),
                 });
-                const response = await fetch(`/api/availability?${params.toString()}`);
+                const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/server-api/availability?${params.toString()}`);
                 
                 if (!response.ok) throw new Error("Could not fetch available times.");
 
@@ -122,7 +124,7 @@ export default function BookingPage() {
         };
 
         try {
-            const res = await fetch('/api/appointments', {
+            const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/server-api/appointments', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(appointmentData),
@@ -139,7 +141,7 @@ export default function BookingPage() {
             setIsLoading(false);
         }
     };
-    
+    {console.log(services)}
     const renderStep = () => {
         switch(step) {
             case 1: // Select Service
@@ -147,6 +149,7 @@ export default function BookingPage() {
                     <div>
                         <h2 className="text-2xl font-semibold mb-4 text-charcoal">1. Select Your Service(s)</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2">
+                            
                             {services.map(s => (
                                 <button key={s.id} onClick={() => handleServiceSelect(s.id)}
                                 className={`p-4 border rounded-lg text-left transition-all ${selectedServiceIds.includes(s.id) ? 'border-gold bg-gold/10 ring-2 ring-gold' : 'border-stone/30 hover:border-gold'}`}>
