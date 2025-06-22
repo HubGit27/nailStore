@@ -52,7 +52,7 @@ export default function BookingPage() {
                 setServices(servicesData.data);
                 setEmployees(employeesData);
             } catch (err) {
-                setError('Could not load booking information. Please try again later.');
+                setError('Unable to book. Please call 301.301.301 to book.');
             } finally {
                 setIsLoading(false);
             }

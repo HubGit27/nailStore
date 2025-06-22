@@ -27,11 +27,11 @@ export default function ContactPage() {
               <ul className="mt-4 space-y-4 text-charcoal">
                 <li className="flex items-start">
                   <MapPin className="h-6 w-6 mr-4 text-gold mt-1 flex-shrink-0" />
-                  <span>123 Luxury Lane<br />Ballenger Creek, MD 21703</span>
+                  <span>5326 New Design Rd<br />Frederick, MD 21703</span>
                 </li>
                 <li className="flex items-start">
                   <Phone className="h-6 w-6 mr-4 text-gold mt-1 flex-shrink-0" />
-                  <span>(240) 555-0123</span>
+                  <span>(301) 846-4400</span>
                 </li>
                 <li className="flex items-start">
                   <Mail className="h-6 w-6 mr-4 text-gold mt-1 flex-shrink-0" />
@@ -52,7 +52,7 @@ export default function ContactPage() {
           {/* Map */}
           <div>
              <div className="h-96 w-full rounded-lg overflow-hidden">
-                <iframe
+                {/* <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d198150.7533031092!2d-77.62537409453124!3d39.3908381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c9c0f9bee4a65d%3A0x7472c1c686121834!2sBallenger%20Creek%2C%20MD!5e0!3m2!1sen!2sus!4v1718157833502!5m2!1sen!2sus"
                   width="100%"
                   height="100%"
@@ -60,7 +60,15 @@ export default function ContactPage() {
                   allowFullScreen={false}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
+                ></iframe> */}
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6167.781206989224!2d-77.42457715890437!3d39.38135287174293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c9da2afb726521%3A0x6091ebb3bb63241b!2s5326%20New%20Design%20Rd%2C%20Frederick%2C%20MD%2021703!5e0!3m2!1sen!2sus!4v1750606435359!5m2!1sen!2sus" 
+                width="100%"
+                height="100%"
+                style={{ border: 0 }} 
+                allowFullScreen={false}
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>

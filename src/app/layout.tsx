@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { AnnouncementManager } from "@/components/layout/AnnouncementManager";
 
 // Load the Inter font with specific weights
 const inter = Inter({ 
@@ -34,7 +35,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "NailSalon",
-            "name": "Aura Nails & Spa",
+            "name": "Gorgeous Nails & Spa",
             "image": "https://images.unsplash.com/photo-1604654894610-df694d318325?q=80&w=2940&auto=format&fit=crop",
             "@id": "https://www.auranails.com", // Replace with your actual domain
             "url": "https://www.auranails.com",  // And here
@@ -42,7 +43,7 @@ export default function RootLayout({
             "priceRange": "$$",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "123 Luxury Lane",
+              "streetAddress": "5326 New Design Rd",
               "addressLocality": "Ballenger Creek",
               "addressRegion": "MD",
               "postalCode": "21703",
@@ -74,7 +75,7 @@ export default function RootLayout({
               }
             ],
             "sameAs": [
-              "https://www.facebook.com/auranails", // Replace with your actual social media links
+              "https://www.facebook.com/profile.php?id=100029105184665", // Replace with your actual social media links
               "https://www.instagram.com/auranails"
             ] 
           }) }}
@@ -82,6 +83,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} font-sans bg-cream text-charcoal`}>
         <Navbar />
+        <AnnouncementManager />
         <main>{children}</main>
         <Footer />
       </body>
