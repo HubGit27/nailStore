@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { ServiceCard } from '@/components/ui/ServiceCard';
 import type { Service } from '@/components/shared/types';
+import Image from 'next/image';
 
 // Helper function to fetch data
 async function getFeaturedServices(): Promise<Service[]> {
@@ -25,28 +26,28 @@ export default async function HomePage() {
     <div>
       {/* Hero Section */}
       
-<section className="relative h-[75vh] min-h-[600px] bg-[url('/cucumberHand.png')] bg-cover bg-center flex items-center justify-center">
-  <div className="absolute inset-0 bg-gradient-to-r"></div>
-  <div className="relative text-center text-white px-4 max-w-4xl mx-auto">
-    <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
-      Experience Tranquility & 
-      <span className="block text-pink-100">Style</span>
-    </h1>
-    {/* <p className="mt-6 max-w-2xl mx-auto text-xl md:text-2xl font-light leading-relaxed">
-      Indulge in our luxurious nail care services and let our expert technicians pamper you in pure elegance.
-    </p> */}
-    <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-      <Link href="/book" className="bg-white text-pink-600 hover:bg-pink-50 hover:text-pink-700 px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg transform hover:-translate-y-1">
-        Book Your Escape
-      </Link>
-      <Link href="/services" className="border-2 border-white text-white hover:bg-white hover:text-pink-600 px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300">
-        View Services
-      </Link>
-    </div>
-  </div>
-</section>
+      <section className="relative h-[75vh] min-h-[600px] bg-[url('/cucumberHand.png')] bg-cover bg-center flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-r"></div>
+        <div className="relative text-center text-white px-4 max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+            Experience Tranquility & 
+            <span className="block text-pink-100">Style</span>
+          </h1>
+          {/* <p className="mt-6 max-w-2xl mx-auto text-xl md:text-2xl font-light leading-relaxed">
+            Indulge in our luxurious nail care services and let our expert technicians pamper you in pure elegance.
+          </p> */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/book" className="bg-white text-pink-600 hover:bg-pink-50 hover:text-pink-700 px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg transform hover:-translate-y-1">
+              Book Your Escape
+            </Link>
+            <Link href="/services" className="border-2 border-white text-white hover:bg-white hover:text-pink-600 px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300">
+              View Services
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      {/* Featured Services Section */}
+      {/* Featured Services Section
       <section className="py-24 bg-gradient-to-b from-white to-soft-pink">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -71,7 +72,7 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* About Teaser Section */}
       <section className="py-24 bg-white">
@@ -104,21 +105,28 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="relative">
-              <div className="aspect-w-4 aspect-h-5 rounded-2xl overflow-hidden shadow-2xl">
-                <div className="bg-gradient-pink w-full h-96 rounded-2xl flex items-center justify-center">
-                  <span className="text-white text-2xl font-light">Salon Interior</span>
+            <div className="aspect-w-4 aspect-h-5 rounded-2xl overflow-hidden shadow-2xl">
+                <div className="relative w-full h-96 rounded-2xl overflow-hidden">
+                  <Image
+                    src="/interior.jpg"
+                    alt="Aura Nails & Spa luxurious interior"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                    priority={false} // Set to true if this image is above the fold
+                  />
                 </div>
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-soft-pink rounded-full opacity-60"></div>
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-primary-100 rounded-full opacity-40"></div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-pink-100 rounded-full opacity-60"></div>
+              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-pink-50 rounded-full opacity-40"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-pink">
+      {/* <section className="py-20 bg-gradient-pink">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Treat Yourself?
@@ -130,7 +138,7 @@ export default async function HomePage() {
             Schedule Your Visit
           </Link>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
