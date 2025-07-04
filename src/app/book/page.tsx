@@ -110,11 +110,9 @@ export default function BookingPage() {
 
         setIsLoading(true);
         setError(null);
-
         const [hours, minutes] = selectedTime.split(':').map(Number);
         const startTime = new Date(selectedDate);
         startTime.setUTCHours(hours, minutes, 0, 0);
-
         const appointmentData = {
             customerName: customerDetails.name,
             customerPhone: customerDetails.phone,
@@ -141,7 +139,7 @@ export default function BookingPage() {
             setIsLoading(false);
         }
     };
-    {console.log(services)}
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const renderStep = () => {
         switch(step) {
             case 1: // Select Service
@@ -181,15 +179,58 @@ export default function BookingPage() {
                 return (
                     <div>
                         <h2 className="text-2xl font-semibold mb-4">3. Select Date & Time</h2>
+                        <p className="text-sm text-gray-500">Times shown in: {timeZone}</p>
                         <input type="date" min={new Date().toISOString().split('T')[0]} value={selectedDate.toISOString().split('T')[0]} onChange={e => setSelectedDate(new Date(e.target.value))} className="w-full p-2 border rounded-lg mb-4"/>
                         {isFetchingTimes ? (
                             <div className="flex justify-center items-center h-48"><Loader className="animate-spin text-gold" /></div>
                         ) : (
                             <div className="grid grid-cols-3 md:grid-cols-4 gap-2 max-h-64 overflow-y-auto pr-2">
-                               {availableTimes.length > 0 ? availableTimes.map(time => (
-                                    <button key={time} onClick={() => setSelectedTime(time)} className={`p-2 border rounded-lg transition-colors ${selectedTime === time ? 'bg-gold text-white border-gold' : 'hover:bg-gold/10 hover:border-gold'}`}>{time}</button>
-                               )) : <p className="col-span-full text-center text-stone py-10">No available times for this day. Please try another date.</p>}
-                            </div>
+                                {availableTimes.length > 0 ? availableTimes.map(time => {
+                                    // --- FIX STARTS HERE ---
+
+                                    // Get the current date. For best results, replace `new Date()` 
+                                    // with the Date object the user has selected from your calendar.
+                                    const referenceDate = new Date(); 
+
+                                    // Split the UTC time string 'HH:mm' into hours and minutes.
+                                    const [hours, minutes] = time.split(':').map(Number);
+                                    console.log("Brandon hours minutes", hours, minutes)
+                                    // Create a new Date object. We'll use the year, month, and day from our referenceDate,
+                                    // but we'll set the time using the hours and minutes from your UTC `time` variable.
+                                    // It's crucial to use Date.UTC() to ensure the date is created in the UTC timezone.
+                                    const utcDate = new Date(Date.UTC(
+                                        referenceDate.getUTCFullYear(),
+                                        referenceDate.getUTCMonth(),
+                                        referenceDate.getUTCDate(),
+                                        hours,
+                                        minutes
+                                    ));
+
+                                    // Now, format the UTC date into the 'America/New_York' time zone.
+                                    // Because our referenceDate is in a DST period, this will correctly use
+                                    // the EDT offset (UTC-4) and give you the right time.
+                                    const localTime = utcDate.toLocaleTimeString('en-US', {
+                                        hour: 'numeric',
+                                        minute: '2-digit',
+                                        hour12: true,
+                                        // timeZone: 'America/New_York'
+                                    });
+                                    console.log("Brandon localTime", localTime)
+                                    return (
+                                        <button
+                                            key={time}
+                                            onClick={() => setSelectedTime(time)}
+                                            className={`p-2 border rounded-lg transition-colors ${selectedTime === time ? 'bg-gold text-white border-gold' : 'hover:bg-gold/10 hover:border-gold'}`}
+                                        >
+                                            {localTime}
+                                        </button>
+                                    );
+                                }) : (
+                                    <p className="col-span-full text-center text-stone py-10">
+                                        No available times for this day. Please try another date.
+                                    </p>
+                                )}
+                                </div>
                         )}
                         <button onClick={() => setStep(4)} disabled={!selectedTime} className="mt-6 w-full bg-charcoal text-cream py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
                         <button type="button" onClick={() => setStep(2)} className="mt-2 w-full text-stone text-sm hover:underline">Back</button>
