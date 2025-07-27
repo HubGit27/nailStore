@@ -19,7 +19,13 @@ export default function BookingPage() {
     const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const [customerDetails, setCustomerDetails] = useState({ name: '', phone: '' });
+    
+    // FIXED: Updated customer details to match API expectations
+    const [customerDetails, setCustomerDetails] = useState({ 
+        firstName: '', 
+        lastName: '', 
+        phone: '' 
+    });
 
     // State for UI feedback (loading, errors)
     const [isLoading, setIsLoading] = useState(false);
@@ -113,14 +119,18 @@ export default function BookingPage() {
         const [hours, minutes] = selectedTime.split(':').map(Number);
         const startTime = new Date(selectedDate);
         startTime.setUTCHours(hours, minutes, 0, 0);
+        
+        // FIXED: Updated payload to match API schema
         const appointmentData = {
-            customerName: customerDetails.name,
-            customerPhone: customerDetails.phone,
+            customerFirstName: customerDetails.firstName,  // ✅ Fixed
+            customerLastName: customerDetails.lastName,    // ✅ Fixed
+            phoneNumber: customerDetails.phone,            // ✅ Fixed
             employeeId: selectedEmployeeId,
             startTime: startTime.toISOString(),
             serviceIds: selectedServiceIds,
         };
-
+        
+        console.log("Brandon appointmentData being submitted ", appointmentData)
         try {
             const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/server-api/appointments', {
                 method: 'POST',
@@ -236,13 +246,35 @@ export default function BookingPage() {
                         <button type="button" onClick={() => setStep(2)} className="mt-2 w-full text-stone text-sm hover:underline">Back</button>
                     </div>
                 );
-            case 4: // Customer Details
+            case 4: // Customer Details - FIXED: Updated form fields
                  return (
                     <div>
                         <h2 className="text-2xl font-semibold mb-4">4. Your Details</h2>
                         <form onSubmit={handleSubmitBooking} className="space-y-4">
-                            <input type="text" placeholder="Full Name" value={customerDetails.name} onChange={e => setCustomerDetails({...customerDetails, name: e.target.value})} className="w-full p-3 border rounded-lg" required/>
-                            <input type="tel" placeholder="Phone Number" value={customerDetails.phone} onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} className="w-full p-3 border rounded-lg" required/>
+                            <input 
+                                type="text" 
+                                placeholder="First Name" 
+                                value={customerDetails.firstName} 
+                                onChange={e => setCustomerDetails({...customerDetails, firstName: e.target.value})} 
+                                className="w-full p-3 border rounded-lg" 
+                                required
+                            />
+                            <input 
+                                type="text" 
+                                placeholder="Last Name" 
+                                value={customerDetails.lastName} 
+                                onChange={e => setCustomerDetails({...customerDetails, lastName: e.target.value})} 
+                                className="w-full p-3 border rounded-lg" 
+                                required
+                            />
+                            <input 
+                                type="tel" 
+                                placeholder="Phone Number" 
+                                value={customerDetails.phone} 
+                                onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} 
+                                className="w-full p-3 border rounded-lg" 
+                                required
+                            />
                             <button type="submit" disabled={isLoading} className="mt-6 w-full bg-charcoal text-cream py-3 rounded-lg disabled:opacity-50 flex items-center justify-center">
                                 {isLoading ? <Loader className="animate-spin" /> : 'Confirm Booking'}
                             </button>
